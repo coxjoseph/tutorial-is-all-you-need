@@ -131,3 +131,6 @@ dmypy.json
 # Notebook
 .ipynb_checkpoints/
 .idea/
+
+# OSX
+.DS_Store

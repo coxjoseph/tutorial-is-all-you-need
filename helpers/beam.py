@@ -58,14 +58,13 @@ class Beam:
         self.current_scores = top_scores
         self.all_scores.append(self.current_scores)
 
-        prev_k = top_score_ids / vocabulary_size  # (beam_size, )
+        prev_k = top_score_ids // vocabulary_size  # (beam_size, )
         next_y = top_score_ids - prev_k * vocabulary_size  # (beam_size, )
 
         self.prev_ks.append(prev_k)
         self.next_ys.append(next_y)
         # for RNN, dim=1 and for transformer, dim=0.
-        print(prev_k)
-        prev_attention = current_attention.index_select(dim=0, index=prev_k)  # (target_seq_len=1, beam_size, source_seq_len)
+        prev_attention = current_attention.index_select(dim=0, index=torch.IntTensor([x for x in range(len(prev_k))]))  # (target_seq_len=1, beam_size, source_seq_len)
         self.all_attentions.append(prev_attention)
 
         for beam_index, last_token_id in enumerate(next_y):
